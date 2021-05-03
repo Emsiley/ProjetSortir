@@ -1,0 +1,34 @@
+{%  extends 'base.html.twig' %}
+{%  block body %}
+    <h1>sortir.com</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/Place</th>
+                <th>État</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut.format('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription.format('d/m/Y') }}</td>
+                    <td>{{ sortie.participants.count() }}/{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td></td>
+                    <td>{{ sortie.organisateur.nom }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block title %} {{ parent() }}{% endblock %}
