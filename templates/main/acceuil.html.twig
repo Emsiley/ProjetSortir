@@ -1,5 +1,11 @@
 {%  extends 'base.html.twig' %}
 {%  block body %}
+
+    {{ form_start(sortieFilterForm) }}
+    {{ form_widget(sortieFilterForm) }}
+    <button>Rechercher</button>
+    {{ form_end(sortieFilterForm) }}
+
     <h1>sortir.com</h1>
     <table>
         <thead>
@@ -18,12 +24,16 @@
             {% for sortie in sorties %}
                 <tr>
                     <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.dateHeureDebut.format('d/m/Y H:i') }}</td>
-                    <td>{{ sortie.dateLimiteInscription.format('d/m/Y') }}</td>
-                    <td>{{ sortie.participants.count() }}/{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                    <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td></td>
-                    <td>{{ sortie.organisateur.nom }}</td>
+                    <td>
+                        {% if user in sortie.participants %}
+                            X
+                        {% endif %}
+                    </td>
+                    <td>{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</td>
                     <td></td>
                 </tr>
             {% endfor %}
