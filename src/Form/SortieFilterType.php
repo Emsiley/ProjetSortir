@@ -2,6 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use App\Filtre;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,19 +17,21 @@ class SortieFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('campus' , TextType::class, [
-                'required' => false
+            ->add('campus' , EntityType::class, [
+                'required' => false,
+                'class' => Campus::class,
+                'choice_label'=>'nom'
             ])
             ->add('nom', TextType::class, [
                 'label' => 'Le nom de la sortie contient',
                 'required' => false
             ])
-            ->add('dateApres', DateType::class, [
+            ->add('dateDebut', DateType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('dateAvant', DateType::class, [
+            ->add('dateFin', DateType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
                 'required' => false
@@ -52,6 +57,8 @@ class SortieFilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'data_class' => Filtre::class
+        ]);
     }
 }

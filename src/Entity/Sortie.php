@@ -51,7 +51,7 @@ class Sortie
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=lieu::class)
+     * @ORM\ManyToOne(targetEntity=Lieu::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;

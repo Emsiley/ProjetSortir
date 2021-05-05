@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Filtre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Stmt\ElseIf_;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,17 +26,70 @@ class SortieRepository extends ServiceEntityRepository
      /**
       * @return Sortie[] Returns an array of Sortie objects
       */
-    public function filter($value)
+    public function filter(Filtre $form, Participant $utilisateurCourant)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        $campus = $form->getCampus();
+        $nom = $form->getNom();
+        $dateDebut = $form->getDateDebut();
+        $dateFin = $form->getDateFin();
+        $organisateur = $form->getOrganisateur();
+        $inscrit = $form->getInscrit();
+        $nonInscrit = $form->getNonInscrit();
+        $expire = $form->getExpire();
+
+        dump($organisateur);
+
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.nom LIKE :val')
+            ->setParameter('val', "%$nom%");
+
+        if($dateDebut != null) {
+            $qb->andWhere(':dateDebut <= s.dateHeureDebut')
+                ->setParameter('dateDebut', $dateDebut);
+        }
+
+        if ($dateFin != null) {
+            $qb->andWhere('s.dateHeureDebut <= :dateFin')
+                ->setParameter('dateFin', $dateFin);
+        }
+
+        if($organisateur) {
+            $qb->andWhere('s.organisateur = :utilisateurCourant')
+                ->setParameter('utilisateurCourant', $utilisateurCourant);
+        } else {
+            $qb->andWhere();
+        }
+
+        if($inscrit) {
+            $qb->orWhere(':utilisateurCourant MEMBER OF s.participants')
+                ->setParameter('utilisateurCourant', $utilisateurCourant);
+        }
+
+        if($nonInscrit) {
+            //orWhere
+        }
+        // TODO Campus
+        dump($qb->getQuery());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /*
+     * public function filterDate(FormInterface $form)
+    {
+        $champs = $form->all();
+        $Date = $champs['dateHeureDebut']->getViewData();
+
+        return $this->createQueryBuilder('dhd')
+            ->where('dhd.dateHeureDebut < :val')
+            ->setParameter('val', "dateLimiteInscription")
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
+    */
+
 
     /*
     public function findOneBySomeField($value): ?Sortie

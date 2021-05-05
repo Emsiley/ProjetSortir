@@ -56,7 +56,7 @@ class Participant implements UserInterface
     private $actif;
 
     /**
-     * @ORM\ManyToMany(targetEntity=sortie::class, inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
      */
     private $sorties;
 
