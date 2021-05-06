@@ -39,9 +39,31 @@ class SortieRepository extends ServiceEntityRepository
 
         dump($organisateur);
 
-        $qb = $this->createQueryBuilder('s')
-            ->where('s.nom LIKE :val')
-            ->setParameter('val', "%$nom%");
+        $qb = $this->createQueryBuilder('s');
+        if($organisateur) {
+            $qb->orWhere('s.organisateur = :utilisateurCourant')
+                ->setParameter('utilisateurCourant', $utilisateurCourant);
+        }
+
+        if($inscrit) {
+            $qb->orWhere(':utilisateurCourant MEMBER OF s.participants')
+                ->setParameter('utilisateurCourant', $utilisateurCourant);
+        }
+
+        if($nonInscrit) {
+            $qb->orWhere(':utilisateurCourant NOT MEMBER OF s.participants')
+                ->setParameter('utilisateurCourant', $utilisateurCourant);
+        }
+
+        if($nom != null) {
+            $qb->andWhere('s.nom LIKE :val')
+                ->setParameter('val', "%$nom%");
+        }
+
+        if($campus != null) {
+            $qb->andWhere('s.campus = :campus')
+                ->setParameter('campus', $campus);
+        }
 
         if($dateDebut != null) {
             $qb->andWhere(':dateDebut <= s.dateHeureDebut')
@@ -53,21 +75,12 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('dateFin', $dateFin);
         }
 
-        if($organisateur) {
-            $qb->andWhere('s.organisateur = :utilisateurCourant')
-                ->setParameter('utilisateurCourant', $utilisateurCourant);
-        } else {
-            $qb->andWhere();
+        if(!$expire) {
+            $qb->andWhere('s.dateLimiteInscription > :now')
+                ->setParameter('now', new \DateTime("now"));
         }
 
-        if($inscrit) {
-            $qb->orWhere(':utilisateurCourant MEMBER OF s.participants')
-                ->setParameter('utilisateurCourant', $utilisateurCourant);
-        }
 
-        if($nonInscrit) {
-            //orWhere
-        }
         // TODO Campus
         dump($qb->getQuery());
 
