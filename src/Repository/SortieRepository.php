@@ -1,90 +1,88 @@
 <?php
 
-namespace App\Repository;
+  namespace App\Repository;
 
-use App\Entity\Participant;
-use App\Entity\Sortie;
-use App\Filtre;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use PhpParser\Node\Stmt\ElseIf_;
-use Symfony\Component\Form\FormInterface;
+  use App\Entity\Participant;
+  use App\Entity\Sortie;
+  use App\Filtre;
+  use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+  use Doctrine\Persistence\ManagerRegistry;
+  use PhpParser\Node\Stmt\ElseIf_;
+  use Symfony\Component\Form\FormInterface;
 
-/**
- * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
- * @method Sortie|null findOneBy(array $criteria, array $orderBy = null)
- * @method Sortie[]    findAll()
- * @method Sortie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class SortieRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
+  /**
+   * @method Sortie|null find( $id, $lockMode = null, $lockVersion = null )
+   * @method Sortie|null findOneBy( array $criteria, array $orderBy = null )
+   * @method Sortie[]    findAll()
+   * @method Sortie[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
+   */
+  class SortieRepository extends ServiceEntityRepository
+  {
+    public function __construct( ManagerRegistry $registry )
     {
-        parent::__construct($registry, Sortie::class);
+      parent::__construct( $registry, Sortie::class );
     }
 
-     /**
-      * @return Sortie[] Returns an array of Sortie objects
-      */
-    public function filter(Filtre $form, Participant $utilisateurCourant)
+    /**
+     * @return Sortie[] Returns an array of Sortie objects
+     */
+    public function filter( Filtre $form, Participant $utilisateurCourant )
     {
-        $campus = $form->getCampus();
-        $nom = $form->getNom();
-        $dateDebut = $form->getDateDebut();
-        $dateFin = $form->getDateFin();
-        $organisateur = $form->getOrganisateur();
-        $inscrit = $form->getInscrit();
-        $nonInscrit = $form->getNonInscrit();
-        $expire = $form->getExpire();
+      $campus       = $form->getCampus();
+      $nom          = $form->getNom();
+      $dateDebut    = $form->getDateDebut();
+      $dateFin      = $form->getDateFin();
+      $organisateur = $form->getOrganisateur();
+      $inscrit      = $form->getInscrit();
+      $nonInscrit   = $form->getNonInscrit();
+      $expire       = $form->getExpire();
 
-        dump($organisateur);
+      //dump( $organisateur );
 
-        $qb = $this->createQueryBuilder('s');
-        if($organisateur) {
-            $qb->orWhere('s.organisateur = :utilisateurCourant')
-                ->setParameter('utilisateurCourant', $utilisateurCourant);
-        }
+      $qb = $this->createQueryBuilder( 's' );
 
-        if($inscrit) {
-            $qb->orWhere(':utilisateurCourant MEMBER OF s.participants')
-                ->setParameter('utilisateurCourant', $utilisateurCourant);
-        }
+      if( $organisateur )
+      {
+        $qb->orWhere( 's.organisateur = :utilisateurCourant' )->setParameter( 'utilisateurCourant', $utilisateurCourant );
+      }
 
-        if($nonInscrit) {
-            $qb->orWhere(':utilisateurCourant NOT MEMBER OF s.participants')
-                ->setParameter('utilisateurCourant', $utilisateurCourant);
-        }
+      if( $inscrit )
+      {
+        $qb->orWhere( ':utilisateurCourant MEMBER OF s.participants' )->setParameter( 'utilisateurCourant', $utilisateurCourant );
+      }
 
-        if($nom != null) {
-            $qb->andWhere('s.nom LIKE :val')
-                ->setParameter('val', "%$nom%");
-        }
+      if( $nonInscrit )
+      {
+        $qb->orWhere( ':utilisateurCourant NOT MEMBER OF s.participants' )->setParameter( 'utilisateurCourant', $utilisateurCourant );
+      }
 
-        if($campus != null) {
-            $qb->andWhere('s.campus = :campus')
-                ->setParameter('campus', $campus);
-        }
+      if( $nom != null )
+      {
+        $qb->andWhere( 's.nom LIKE :val' )->setParameter( 'val', "%$nom%" );
+      }
 
-        if($dateDebut != null) {
-            $qb->andWhere(':dateDebut <= s.dateHeureDebut')
-                ->setParameter('dateDebut', $dateDebut);
-        }
+      if( $campus != null )
+      {
+        $qb->andWhere( 's.campus = :campus' )->setParameter( 'campus', $campus );
+      }
 
-        if ($dateFin != null) {
-            $qb->andWhere('s.dateHeureDebut <= :dateFin')
-                ->setParameter('dateFin', $dateFin);
-        }
+      if( $dateDebut != null )
+      {
+        $qb->andWhere( ':dateDebut <= s.dateHeureDebut' )->setParameter( 'dateDebut', $dateDebut );
+      }
 
-        if(!$expire) {
-            $qb->andWhere('s.dateLimiteInscription > :now')
-                ->setParameter('now', new \DateTime("now"));
-        }
+      if( $dateFin != null )
+      {
+        $qb->andWhere( 's.dateHeureDebut <= :dateFin' )->setParameter( 'dateFin', $dateFin );
+      }
 
+      if( $expire )
+      {
+        $qb->andWhere( 's.dateLimiteInscription < :now' )->setParameter( 'now', new \DateTime( "now" ) );
+      }
 
-        // TODO Campus
-        dump($qb->getQuery());
-
-        return $qb->getQuery()->getResult();
+      // TODO Campus
+      return $qb->getQuery()->getResult();
     }
 
     /*
@@ -103,7 +101,6 @@ class SortieRepository extends ServiceEntityRepository
     }
     */
 
-
     /*
     public function findOneBySomeField($value): ?Sortie
     {
@@ -115,4 +112,4 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
-}
+  }

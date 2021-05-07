@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% if msg is defined and msg|length > 0 %}
+        <div style="text-align: center;">
+            {{ msg }}
+            <br>
+            <a href="{{ previous }}">Retour à la recherche</a>
+        </div>
+    {% else %}
+
+        {% if error is defined and error|length > 0 %}
+            <div style="color: red;">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form action="{{ url }}" method="post">
+
+            <div class="flex-form-columns">
+                <div class="left">
+                    <div>
+                        <label for="nom"> Nom de la sortie : </label>
+                        <input type="text" name="nom" id="nom" required>
+                    </div>
+
+                    <div>
+                        <label for="dateHeureDebut"> Date et heure de la sortie : </label>
+                        <input type="datetime-local" name="dateHeureDebut" id="dateHeureDebut" required>
+                    </div>
+
+                    <div>
+                        <label for="dateLimiteInscription"> Date limite d'inscription : </label>
+                        <input type="date" name="dateLimiteInscription" id="dateLimiteInscription" required>
+                    </div>
+
+                    <div>
+                        <label for="nbInscriptionMax"> Nombre de places : </label>
+                        <input type="number" name="nbInscriptionMax" id="nbInscriptionMax">
+                    </div>
+
+                    <div>
+                        <label for="duree"> Durée : </label>
+                        <input type="number" name="duree" id="duree">
+                    </div>
+
+                    <div>
+                        <label for="infosSortie"> Description et infos : </label>
+                        <textarea name="infosSortie" id="infosSortie"></textarea>
+                    </div>
+                </div>
+
+
+                <!-- partie droite -->
+
+                <div class="right">
+                    <div>
+                        <label for="campus"> Campus :</label>
+                        <select name="campus" id="campus" required>
+                            <option value="" disabled selected>Sélectionner un campus</option>
+                            {% for item in campus %}
+                            <option value="{{ item.id }}">
+                                 {{ item.nom }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+    {#                TODO : Manquant sur l'entité Sortie #}
+    {#                <div>#}
+    {#                    <label for="ville"> Ville :</label>#}
+    {#                    <select name="ville" id="ville">#}
+    {#                        <option value="" disabled selected>Sélectionner une ville</option>#}
+    {#                        {% for item in villes %}#}
+    {#                            <option value="{{ item.id }}">#}
+    {#                                {{ item.nom }}#}
+    {#                            </option>#}
+    {#                        {% endfor %}#}
+    {#                    </select>#}
+    {#                </div>#}
+
+                    <div>
+                        <label for="lieu"> Lieu :</label>
+                        <select name="lieu" id="lieu" required>
+                            <option value="" disabled selected>Sélectionner un lieu</option>
+                            {% for item in lieux %}
+                                <option value="{{ item.id }}">
+                                    {{ item.nom }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="street-address"> Rue : </label>
+                        <input type="text" name="street-address" id="street-address" required>
+                    </div>
+
+                    <div>
+                        <label for="postal-code"> Code postal :</label>
+                        <input type="text" name="postal-code" id="postal-code" required>
+                    </div>
+
+                    <div>
+                        <label for="latitude"> Latitude :</label>
+                        <input type="text" name="latitude" id="latitude">
+                    </div>
+
+                    <div>
+                        <label for="longitude"> Longitude :</label>
+                        <input type="text" name="longitude" id="longitude">
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- fin parie droite  -->
+
+            <div class="button">
+                <button type="submit">Publier la sortie</button>
+                <button type="reset">Annuler</button>
+            </div>
+
+        </form>
+    {% endif %}
+{% endblock %}

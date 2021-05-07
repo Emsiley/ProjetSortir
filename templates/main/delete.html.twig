@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <h2>Suppression de sortie</h2>
+
+    <p style="text-align: center">
+        Sortie #{{ sortieToDelete.id }} supprimée avec succès !
+        <br>
+        <a href="{{ previous }}">Retour à la recherche</a>
+    </p>
+
+{% endblock %}

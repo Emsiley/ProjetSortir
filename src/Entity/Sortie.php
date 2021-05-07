@@ -166,14 +166,14 @@ class Sortie
 
     public function getLieu(): ?lieu
     {
-        return $this->lieu;
+      return $this->lieu;
     }
 
     public function setLieu(?lieu $lieu): self
     {
-        $this->lieu = $lieu;
+      $this->lieu = $lieu;
 
-        return $this;
+      return $this;
     }
 
     public function getCampus(): ?Campus

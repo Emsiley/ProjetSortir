@@ -1,0 +1,138 @@
+*
+{
+  box-sizing: border-box;
+}
+
+body
+{
+  background : black;
+  color      : white;
+}
+
+nav ul
+{
+  display         : flex;
+  justify-content : flex-end;
+  list-style      : none;
+  padding         : 2px;
+}
+
+h1
+{
+  margin : 0;
+}
+
+h2
+{
+  text-align : center;
+}
+
+.w-100
+{
+  width : 100%;
+}
+
+.flex-form-columns
+{
+  display         : flex;
+  justify-content : center;
+  margin          : auto;
+}
+
+.flex-form-columns > div
+{
+  width : 50%;
+}
+
+.button
+{
+  display         : flex;
+  justify-content : center;
+}
+
+#sortie_filter, form
+{
+  max-width : 600px;
+  margin    : auto;
+}
+
+#sortie_filter > div
+{
+  display         : flex;
+  justify-content : space-between;
+  align-items     : center;
+  flex-wrap       : wrap;
+  width           : 100%;
+}
+
+table
+{
+  width           : 100%;
+  border-collapse : collapse;
+}
+
+tr, td, th
+{
+  border-collapse : collapse;
+  border          : 1px solid grey;
+  padding         : 3px;
+  text-align      : center;
+}
+
+.left, .right
+{
+  margin    : 1em;
+  display   : flex;
+  flex-wrap : wrap;
+}
+
+.left > div, .right > div
+{
+  width : 100%;
+}
+
+div
+{
+  padding : 5px;
+}
+
+li
+{
+  padding : 8px;
+}
+
+.button *
+{
+  margin  : 20px;
+  padding : 30px;
+}
+
+.left > div > label, .right > div > label
+{
+  width         : 200px;
+  display       : inline-block;
+  text-align    : left;
+  margin-bottom : 5px;
+}
+
+.left input, .right input, .left select, .right select
+{
+  width   : 100%;
+  display : block;
+  min-height: 30px;
+}
+
+.left textarea, .right textarea
+{
+  width   : 100%;
+  display : block;
+  resize: vertical;
+  min-height: 200px;
+}
+
+.flex
+{
+  display         : flex;
+  justify-content : space-between;
+  align-items     : center;
+}

@@ -1,13 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=yes, initial-scale=1.0 ">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{%block title %} patate {% endblock %}</title>
-</head>
-<body>
-{% block body %}{% endblock %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0 ">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{%block title %}Patate{% endblock %}</title>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <header class="flex">
+            <h1>
+                Logo Sortir.com
+            </h1>
+            <nav class="nav">
+                <ul>
+                    <li>
+                        <a href="./">
+                            Accueil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="create">
+                            Créer une sortie
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Se déconnecter
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
 </html>
