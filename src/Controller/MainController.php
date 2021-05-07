@@ -87,7 +87,7 @@
       $sortie->setOrganisateur( $currentUser );
 
       // TODO : Mettre le bon état
-      $sortie->setEtat( $etatRepository->findAll()[0] );
+      $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
 
       // Sauvegarde BDD
       try
@@ -118,7 +118,7 @@
       //var_dump($request->get( "id" ) );
 
       $currentUser    = $ps->findAll()[0];
-      $sortieToDelete = $sr->find( $request->request->get( "id" ) );
+      $sortieToDelete = $sr->find( $request->get( "id" ) );
 
       $entityManager = $this->getDoctrine()->getManager();
       $entityManager->remove( $sortieToDelete );

@@ -42,12 +42,12 @@
                         </td>
                         <td>{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</td>
                         <td>
-                            {{ sortie.etat.libelle == "En création" and sortie.organisateur == user ? "Modifier Publier | " : "Afficher | " }}
+                            {{ sortie.etat.libelle == "En création" and sortie.organisateur == user ? "Modifier | Publier | " : "Afficher | " }}
                             {{ sortie.etat.libelle == "Ouverte" and user not in sortie.participants and sortie.participants|length < sortie.nbInscriptionMax ? "S'inscrire | " : "" }}
                             {{ (sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Fermé") and user in sortie.participants ? "Se désister | " : "" }}
-                            <a href="delete?id={{ sortie.id }}">
-                                Supprimer
-                            </a>
+                            {% if sortie.organisateur == user %}
+                                <a href="delete?id={{ sortie.id }}">Supprimer</a> |
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

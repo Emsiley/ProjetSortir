@@ -76,9 +76,9 @@
         $qb->andWhere( 's.dateHeureDebut <= :dateFin' )->setParameter( 'dateFin', $dateFin );
       }
 
-      if( $expire )
+      if( !$expire )
       {
-        $qb->andWhere( 's.dateLimiteInscription < :now' )->setParameter( 'now', new \DateTime( "now" ) );
+        $qb->andWhere( 's.etat != 5' );
       }
 
       // TODO Campus
